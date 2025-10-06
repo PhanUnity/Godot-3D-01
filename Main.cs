@@ -5,7 +5,7 @@ public partial class Main : Node
     [Export]
     public PackedScene MobScene { get; set; }
 
-    private void OnMobTimerTimeout()
+    private void _on_mob_timer_timeout()
     {
         // Create a new instance of the Mob scene.
         Mob mob = MobScene.Instantiate<Mob>();
