@@ -5,6 +5,11 @@ public partial class Main : Node
     [Export]
     public PackedScene MobScene { get; set; }
 
+    public override void _Ready()
+    {
+        GetNode<Control>("UserInterface/Retry").Hide();
+    }
+
     private void _onModTimerTimeout()
     // _on_mob_timer_timeout()
     {
@@ -22,9 +27,22 @@ public partial class Main : Node
 
         // Spawn the mob by adding it to the Main scene.
         AddChild(mob);
+        
+        // We connect the mob to the score label to update the score upon squashing one.
+        mob.Squashed += GetNode<ScoreLabel>("UserInterface/ScoreLabel").OnMobSquashed;
     }
     private void OnPlayerHit()
     {
         GetNode<Timer>("MobTimer").Stop();
+        GetNode<Control>("UserInterface/Retry").Show();
+    }
+    
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event.IsActionPressed("ui_accept") && GetNode<Control>("UserInterface/Retry").Visible)
+        {
+            // This restarts the current scene.
+            GetTree().ReloadCurrentScene();
+        }
     }
 }
