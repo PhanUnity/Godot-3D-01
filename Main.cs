@@ -5,7 +5,8 @@ public partial class Main : Node
     [Export]
     public PackedScene MobScene { get; set; }
 
-    private void _on_mob_timer_timeout()
+    private void _onModTimerTimeout()
+    // _on_mob_timer_timeout()
     {
         // Create a new instance of the Mob scene.
         Mob mob = MobScene.Instantiate<Mob>();
@@ -21,5 +22,9 @@ public partial class Main : Node
 
         // Spawn the mob by adding it to the Main scene.
         AddChild(mob);
+    }
+    private void OnPlayerHit()
+    {
+        GetNode<Timer>("MobTimer").Stop();
     }
 }

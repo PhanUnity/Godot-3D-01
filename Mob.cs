@@ -1,7 +1,15 @@
 using Godot;
+using System;
+// Emitted when the player jumped on the mob.
 
 public partial class Mob : CharacterBody3D
 {
+
+// public event Action Squashed;
+// public delegate void SquashedEventHandler();
+
+    [Signal]
+    public delegate void SquashedEventHandler();
     // Minimum speed of the mob in meters per second.
     [Export]
     public int MinSpeed { get; set; } = 10;
@@ -36,6 +44,12 @@ public partial class Mob : CharacterBody3D
     // We also specified this function name in PascalCase in the editor's connection window.
     private void OnVisibilityNotifierScreenExited()
     {
+        QueueFree();
+    }
+    
+    public void Squash()
+    {
+        EmitSignal(SignalName.Squashed);
         QueueFree();
     }
 }
